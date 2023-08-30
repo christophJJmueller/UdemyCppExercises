@@ -93,6 +93,7 @@ char to_lower_case_(const char character)
 
 char *to_upper_case(char *text)
 {
+    //Generell bei Pointern: Überprüfen, ob der Pointer auf etwas gültiges zeigt!
     if (text == nullptr)
     {
         return nullptr;

@@ -121,7 +121,7 @@ void print_scene(const VehicleType &ego_vehicle,
     auto center_idx = std::size_t{0};
     auto right_idx = std::size_t{0};
 
-    const auto offset_m = std::uint32_t{20};
+    const auto offset_m = std::uint32_t{10};
     const auto view_range_m = static_cast<std::int32_t>(VIEW_RANGE_M);
 
     for (auto i = view_range_m; i >= -view_range_m; i -= offset_m)
@@ -166,6 +166,8 @@ void print_scene(const VehicleType &ego_vehicle,
         std::cout << i << "\t| " << left_string << " | " << center_string
                   << " | " << right_string << " | \n";
     }
+
+    std::cout << "E: " << ego_vehicle.speed_mps << " (m/s)" << std::endl;
 }
 
 void compute_future_distance(VehicleType &vehicle,
@@ -204,9 +206,23 @@ void compute_future_state(const VehicleType &ego_vehicle,
 
 void decrease_speed(VehicleType &ego_vehicle)
 {
+    float decrease_mps = LONGITUDINAL_DIFFERENCE_PERCENTAGE * ego_vehicle.speed_mps;
+
+    if (ego_vehicle.speed_mps - decrease_mps >= 0.0F) // NICHT RÜCKWÄRTS FAHREN!
+    {
+        ego_vehicle.speed_mps -= decrease_mps;
+    }
+
+
 }
 
 void longitudinal_control(const VehicleType &front_vehicle,
                           VehicleType &ego_vehicle)
 {
+    float ego_speed_kph = mps_to_kph(ego_vehicle.speed_mps);
+    if (front_vehicle.lane == LaneAssociationType::CENTER && front_vehicle.distance_m > 0 && front_vehicle.distance_m < ego_speed_kph/2)
+    {
+        decrease_speed(ego_vehicle);
+    }
+
 }

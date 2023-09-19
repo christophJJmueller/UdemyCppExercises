@@ -287,10 +287,47 @@ LaneAssociationType get_lane_change_request(
     const VehicleType &ego_vehicle,
     const NeighborVehiclesType &vehicles)
 {
+    // Ego lane ermitteln
+    auto ego_lane_vehicles = get_vehicle_array(ego_vehicle.lane, vehicles);
+    auto rear_vehicle = &ego_lane_vehicles[1]; //HIER: Fahrzeug 1 immer hinter Ego Vehicle
+    auto critical_distance = mps_to_kph(ego_vehicle.speed_mps) / 5;
+
+    // Gap < ego.speed / 5 ?
+
+    if (std::abs(rear_vehicle->distance_m) < critical_distance)
+    {
+        if (ego_vehicle.lane != LaneAssociationType::CENTER)
+        {
+            auto available_gap = vehicles.vehicles_center_lane[0].distance_m - vehicles.vehicles_center_lane[1].distance_m;
+
+            if (available_gap >= critical_distance)
+            {
+                return LaneAssociationType::CENTER;
+            }
+        }
+
+        else
+        {
+            auto left_gap = vehicles.vehicles_left_lane[0].distance_m - vehicles.vehicles_left_lane[1].distance_m;
+            auto right_gap = vehicles.vehicles_right_lane[0].distance_m - vehicles.vehicles_right_lane[1].distance_m;
+
+            if (left_gap > right_gap && left_gap > critical_distance)
+                return LaneAssociationType::LEFT;
+            else if (right_gap >= left_gap && right_gap > critical_distance)
+                return LaneAssociationType::RIGHT;
+        }
+    }
+    return ego_vehicle.lane;
 }
 
 
 bool lateral_control(const LaneAssociationType lane_change_request,
                      VehicleType &ego_vehicle)
 {
+    if (lane_change_request == ego_vehicle.lane)
+        return false;
+
+    ego_vehicle.lane = lane_change_request;
+    return true;
+
 }

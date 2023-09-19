@@ -1,9 +1,13 @@
+#include <chrono>
 #include <cstring>
 #include <iostream>
 #include <numeric>
+#include <thread>
 
 #include "AdFunctions.hpp"
 #include "AdTypes.hpp"
+
+#include "utils.hpp"
 
 int main()
 {
@@ -16,19 +20,19 @@ int main()
     print_vehicle(ego_vehicle);
     print_neighbor_vehicles(vehicles);
 
-    print_scene(ego_vehicle, vehicles);
-
-    std::cout << "Compute forward (1sec)?: ";
+    std::cout << "Start simulation?: ";
     auto Input = char{};
     std::cin >> Input;
 
-    while (Input == 'y')
+    while (true)
     {
-        compute_future_state(ego_vehicle, vehicles, 1);
-        print_scene(ego_vehicle, vehicles);
+        clear_console();
 
-        std::cout << "Compute forward (1sec)?: ";
-        std::cin >> Input;
+        compute_future_state(ego_vehicle, vehicles, 0.100F);
+        print_scene(ego_vehicle, vehicles);
+        longitudinal_control(vehicles.vehicles_center_lane[0], ego_vehicle);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     return 0;

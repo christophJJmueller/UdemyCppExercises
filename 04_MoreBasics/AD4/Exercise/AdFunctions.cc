@@ -131,11 +131,28 @@ void print_scene(const VehicleType &ego_vehicle,
         char left_string[]{"   "};
         char center_string[]{"   "};
         char right_string[]{"   "};
+        char *ego_string = nullptr;
+
+        switch (ego_vehicle.lane)
+        {
+        case LaneAssociationType::LEFT:
+            ego_string = left_string;
+            break;
+        case LaneAssociationType::CENTER:
+            ego_string = center_string;
+            break;
+        case LaneAssociationType::RIGHT:
+            ego_string = right_string;
+            break;
+        case LaneAssociationType::NONE:
+        default:
+            break;
+        }
 
         if ((center_string != nullptr) && (range_m >= ego_vehicle.distance_m) &&
             (ego_vehicle.distance_m > (range_m - offset_m)))
         {
-            center_string[1] = 'E';
+            ego_string[1] = 'E';
         }
 
         if (left_idx < NUM_VEHICLES_ON_LANE)
@@ -237,5 +254,21 @@ void longitudinal_control(const VehicleType &front_vehicle,
 const VehicleType *get_vehicle_array(const LaneAssociationType lane,
                                      const NeighborVehiclesType &vehicles)
 {
+    switch (lane)
+    {
+    case LaneAssociationType::LEFT:
+        return vehicles.vehicles_left_lane;
+        break;
+    case LaneAssociationType::CENTER:
+        return vehicles.vehicles_center_lane;
+        break;
+    case LaneAssociationType::RIGHT:
+        return vehicles.vehicles_right_lane;
+        break;
+    case LaneAssociationType::NONE:
+    default:
+        break;
+    }
+
     return nullptr;
 }

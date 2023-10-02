@@ -9,8 +9,7 @@
 
 int main()
 {
-    auto text = readFile("C:/Users/Jan/OneDrive/_Coding/UdemyCppExercises/"
-                         "06_String/SplitWords/Solution/text.txt");
+    auto text = readFile("C:/Users/much1/Documents/ComputerVision/UdemyCPPExercises/UdemyCppExercises/06_String/SplitWords/Exercise/text.txt");
     std::cout << text << '\n' << '\n';
 
     clean_text(text);

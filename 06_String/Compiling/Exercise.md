@@ -32,9 +32,9 @@ void run(const fs::path &executable_path);
 Important compiler commands:
 
 ```bash
-g++ -c Main.cc -o Main.o
-g++ Main.o -o Main
-Run on Windows: Main.exe
+g++ -c Main.cc -o Main.o    //compile
+g++ Main.o -o Main          //link
+Run on Windows: Main.exe    //execute
 Run on Unix: ./Main
 ```
 

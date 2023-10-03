@@ -13,7 +13,7 @@ void clean_text(std::string &text)
     // while (text.find_first_of(search_str) != std::string::npos)
     // {
     //     auto idx = text.find_first_of(search_str);
-    //     text.replace(idx, 1, " ");
+    //     text.replace(idx, 1, "");
     // }
     replace_all(text, ".", "");
     replace_all(text, ",", "");

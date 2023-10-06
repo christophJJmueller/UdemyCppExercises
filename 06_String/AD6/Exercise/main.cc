@@ -9,8 +9,28 @@
 
 #include "utils.hpp"
 
-int main()
+namespace fs = std::filesystem;
+
+int main(int argc, char **argv)
 {
+    auto data_filepath = fs::path{};
+
+    if (argc < 2) //wenn keine Argumente übergeben werden
+    {
+        data_filepath /= fs::current_path();
+        data_filepath /= "data";
+    }
+    else
+    {
+        const auto user_path_str = std::string(argv[1]);
+        data_filepath = fs::path(user_path_str);
+    }
+
+    auto ego_data_path = data_filepath;
+    ego_data_path /= "ego_data.json";
+    auto vehicle_data_path = data_filepath;
+    vehicle_data_path /= "vehicle_data.json";
+
     auto ego_vehicle = VehicleType{};
     auto vehicles = NeighborVehiclesType{};
 

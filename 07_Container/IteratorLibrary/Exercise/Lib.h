@@ -14,6 +14,6 @@ DifferenceType distance(It first, It last);
 
 It next(It it, DifferenceType n = 1);
 
-It prev(It it, DifferenceType n = -1);
+It prev(It it, DifferenceType n = 1);
 
 } // namespace mystd

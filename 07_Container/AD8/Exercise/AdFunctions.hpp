@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <array>
 
 #include "AdTypes.hpp"
 
@@ -28,8 +29,9 @@ void compute_future_state(const VehicleType &ego_vehicle,
 void longitudinal_control(const VehicleType &front_vehicle,
                           VehicleType &ego_vehicle);
 
-const VehicleType *get_vehicle_array(const LaneAssociationType lane,
-                                     const NeighborVehiclesType &vehicles);
+const std::array<VehicleType, NUM_VEHICLES_ON_LANE> &get_vehicle_array(
+    const LaneAssociationType lane,
+    const NeighborVehiclesType &vehicles);
 
 LaneAssociationType get_lane_change_request(
     const VehicleType &ego_vehicle,

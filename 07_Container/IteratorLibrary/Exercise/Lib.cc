@@ -23,7 +23,7 @@ DifferenceType distance(It first, It last)
 {
     auto dist = DifferenceType{0};
 
-    while (first != last)
+    while (first != last-1)
     {
         ++first;
         ++dist;

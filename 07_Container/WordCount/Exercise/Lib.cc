@@ -48,14 +48,57 @@ WordVector split_text(const std::string &text, char delimiter)
 
 CountedWordsMap count_words(const WordVector &words)
 {
+    //Vector(String) -> Map
+    /*
+    1) Vector Element lesen
+    2) Vorhandensein in Map prüfen
+        2.1) JA: Zähler +1
+        2.2) NEIN: neu anlegen, Zähler = 1
+    3) nächstes Vector Element
+    */
+
+   auto WordMap = CountedWordsMap{};
+
+   for (auto it_vec = words.begin(); it_vec != words.end(); it_vec++)
+   {
+        auto current_word = WordCountPair(*it_vec, 1);
+
+        if (!WordMap.contains(*it_vec))
+        {
+            WordMap.insert(current_word);
+        }
+        else
+        {
+            WordMap[*it_vec] += 1;
+        }
+   }
+
+   return WordMap;
 
 }
 
 WordCountVec map_to_vector(const CountedWordsMap &counted_words)
 {
+    //Map(Pairs) -> Vector(Pairs)
+    auto WordVec = WordCountVec{};
 
+    for (auto it_map = counted_words.begin(); it_map != counted_words.end(); it_map++)
+    {
+        WordVec.push_back(*it_map);
+    }
+
+    return WordVec;
+
+}
+
+bool compare(WordCountPair &pair1, WordCountPair &pair2)
+{
+    return pair1.second > pair2.second;
 }
 
 void sort_word_counts(WordCountVec &word_counts)
 {
+    //Sort Vector(Pairs)
+    std::sort(word_counts.begin(), word_counts.end(), compare);
+
 }

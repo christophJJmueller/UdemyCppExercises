@@ -19,4 +19,23 @@ T get_rand_float(const T &lower_limit, const T &upper_limit)
 
 class AirConditioner
 {
+public:
+    AirConditioner() = default;
+    AirConditioner(float _target_temp_) : target_temp(_target_temp_)
+    {
+        std::cout << "The AC has a target temp of " << target_temp << std::endl;
+    };
+    ~AirConditioner() = default;
+
+    float measure();
+    int activate(float curr_temp);
+
+private:
+    bool heat(int duration);
+    bool cool(int duration);
+
+
+private:
+    float current_temp;
+    float target_temp = 20.0F;
 };

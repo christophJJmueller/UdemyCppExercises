@@ -19,13 +19,13 @@ int AirConditioner::activate(float curr_temp)
         auto temp_diff = target_temp - current_temp;
         if (temp_diff > 0)
         {
-            int heat_time = std::round(temp_diff * 2);
+            int heat_time = std::abs(static_cast<int>(temp_diff * 2));
             heat(heat_time);
             return heat_time;
         }
         else if (temp_diff < 0)
         {
-            int cool_time = std::round(temp_diff);
+            int cool_time = std::abs(static_cast<int>(temp_diff));
             cool(cool_time);
             return cool_time;
         }
@@ -34,34 +34,34 @@ int AirConditioner::activate(float curr_temp)
     }
 }
 
-bool AirConditioner::heat(int duration)
+bool AirConditioner::heat(const int duration)
 {
-    do
+    auto remaining_time = duration;
+    while (remaining_time > 0)
     {
-        for (std::size_t i = 0; i < duration; i++)
+        for (int i = 0; i <= duration; i++)
         {
             if(i%2==0 && i != 0)
                 current_temp++;
-            std::cout << "The current temp is: " << current_temp << ". Remaining heating time: " << duration << std::endl;
-            duration--;
+            std::cout << "The current temp is: " << current_temp << " degrees. Remaining heating time: " << remaining_time << " minutes." << std::endl;
+            remaining_time--;
         }
-
-    } while (duration >= 0);
-    return duration >= 0;
+    }
+    return remaining_time > 0;
 
 }
 
 bool AirConditioner::cool(int duration)
 {
-    do
+    auto remaining_time = duration;
+    while (remaining_time > 0)
     {
-        for (std::size_t i = 0; i < duration; i++)
+        for (int i = 0; i <= duration; i++)
         {
             current_temp--;
-            std::cout << "The current temp is: " << current_temp << ". Remaining heating time: " << duration << std::endl;
-            duration--;
+            std::cout << "The current temp is: " << current_temp << " degrees. Remaining cooling time: " << remaining_time << " minutes." << std::endl;
+            remaining_time--;
         }
-
-    } while (duration >= 0);
-    return duration >= 0;
+    }
+    return remaining_time > 0;
 }

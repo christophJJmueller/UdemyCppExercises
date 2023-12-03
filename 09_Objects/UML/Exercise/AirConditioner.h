@@ -31,8 +31,8 @@ public:
     int activate(float curr_temp);
 
 private:
-    bool heat(int duration);
-    bool cool(int duration);
+    bool heat(const int duration);
+    bool cool(const int duration);
 
 
 private:
